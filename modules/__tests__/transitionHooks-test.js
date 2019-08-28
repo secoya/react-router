@@ -1,6 +1,7 @@
 import expect, { spyOn } from 'expect'
 import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
+import { act } from 'react-dom/test-utils'
 import createHistory from '../createMemoryHistory'
 import { routerShape } from '../PropTypes'
 import execSteps from './execSteps'
@@ -30,7 +31,7 @@ describe('When a router enters a branch', function () {
     }
 
     class NewsFeed extends Component {
-      componentWillMount() {
+      UNSAFE_componentWillMount() {
         removeNewsLeaveHook = this.context.router.setRouteLeaveHook(
           this.props.route,
           () => newsLeaveHookSpy() // Break reference equality.
@@ -59,7 +60,7 @@ describe('When a router enters a branch', function () {
     }
 
     class User extends Component {
-      componentWillMount() {
+      UNSAFE_componentWillMount() {
         this.context.router.setRouteLeaveHook(
           this.props.route,
           userLeaveHookSpy
@@ -201,19 +202,25 @@ describe('When a router enters a branch', function () {
     })
   })
 
-  it('calls the route leave hooks when leaving the route', function (done) {
+  it('calls the route leave hooks when leaving the route', function () {
     const history = createHistory('/news')
-
-    render(<Router history={history} routes={routes}/>, node, function () {
-      expect(newsLeaveHookSpy.calls.length).toEqual(0)
-      history.push('/inbox')
-      expect(newsLeaveHookSpy.calls.length).toEqual(1)
-      history.push('/news')
-      expect(newsLeaveHookSpy.calls.length).toEqual(1)
-      history.push('/inbox')
-      expect(newsLeaveHookSpy.calls.length).toEqual(2)
-      done()
+    act(() => {
+      render(<Router history={history} routes={routes}/>, node, function () {
+      })
     })
+    expect(newsLeaveHookSpy.calls.length).toEqual(0)
+    act(() => {
+      history.push('/inbox')
+    })
+    expect(newsLeaveHookSpy.calls.length).toEqual(1)
+    act(() => {
+      history.push('/news')
+    })
+    expect(newsLeaveHookSpy.calls.length).toEqual(1)
+    act(() => {
+      history.push('/inbox')
+    })
+    expect(newsLeaveHookSpy.calls.length).toEqual(2)
   })
 
   it('does not call removed route leave hooks', function (done) {

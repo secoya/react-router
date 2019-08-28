@@ -1,7 +1,7 @@
 import warning from './routerWarning'
-import React from 'react'
+import PropTypes from 'prop-types'
 
-const { object } = React.PropTypes
+const { object } = PropTypes
 
 /**
  * The RouteContext mixin provides a convenient way for route
@@ -25,7 +25,7 @@ const RouteContext = {
     }
   },
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     warning(false, 'The `RouteContext` mixin is deprecated. You can provide `this.props.route` on context with your own `contextTypes`. http://tiny.cc/router-routecontextmixin')
   }
 

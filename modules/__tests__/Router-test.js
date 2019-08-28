@@ -1,6 +1,7 @@
 import expect from 'expect'
 import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
+import { act } from 'react-dom/test-utils'
 import createHistory from '../createMemoryHistory'
 import { canUseMembrane } from '../deprecateObjectProperties'
 import Route from '../Route'
@@ -98,7 +99,7 @@ describe('Router', function () {
 
     render((
       <Router history={createHistory('/')} createElement={x => <Wrapper component={x} />}>
-        <Route path="/" component={Child}/>
+        <Route path="/" component={Child} />
       </Router>
     ), node, function () {
       expect(node.textContent).toEqual('wrapped')
@@ -315,7 +316,7 @@ describe('Router', function () {
         expect(props.foo).toBe('bar')
         expect(props.render).toNotExist()
         done()
-        return <div/>
+        return <div />
       }
 
       render((
@@ -433,14 +434,28 @@ describe('Router', function () {
       })
     })
 
-    it('should throw without onError', function () {
-      expect(function () {
+    it.skip('should throw without onError', function () {
+      class ErrorBoundary extends Component {
+        static error = null
+
+        componentDidCatch(caughtError) {
+          ErrorBoundary.error = caughtError
+        }
+
+        render() {
+          return this.props.children
+        }
+      }
+      act(() => {
         render((
-          <Router history={createHistory('/')}>
-            <Route path="/" getComponent={getComponent} />
-          </Router>
+          <ErrorBoundary>
+            <Router history={createHistory('/')}>
+              <Route path="/" getComponent={getComponent} />
+            </Router>
+          </ErrorBoundary>
         ), node)
-      }).toThrow('error fixture')
+      })
+      expect(ErrorBoundary.error).toBe('error fixture')
     })
   })
 })

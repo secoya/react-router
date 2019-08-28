@@ -2,8 +2,8 @@ import expect from 'expect'
 import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import createHistory from '../createMemoryHistory'
+import { act } from 'react-dom/test-utils'
 import resetHash from './resetHash'
-import execSteps from './execSteps'
 import Router from '../Router'
 import Route from '../Route'
 
@@ -33,26 +33,25 @@ describe('pushState', function () {
   })
 
   describe('when the target path contains a colon', function () {
-    it('works', function (done) {
+    it('works', function () {
       const history = createHistory('/')
-      const steps = [
-        function () {
-          expect(this.state.location.pathname).toEqual('/')
-          history.push('/home/hi:there')
-        },
-        function () {
-          expect(this.state.location.pathname).toEqual('/home/hi:there')
-        }
-      ]
+      const ref = React.createRef()
 
-      const execNextStep = execSteps(steps, done)
+      act(() => {
+        render((
+          <Router history={history} ref={ref}>
+            <Route path="/" component={Index} />
+            <Route path="/home/hi:there" component={Home} />
+          </Router>
+        ), node)
+      })
+      expect(ref.current.state.location.pathname).toEqual('/')
 
-      render((
-        <Router history={history} onUpdate={execNextStep}>
-          <Route path="/" component={Index}/>
-          <Route path="/home/hi:there" component={Home}/>
-        </Router>
-      ), node, execNextStep)
+      act(() => {
+        history.push('/home/hi:there')
+      })
+
+      expect(ref.current.state.location.pathname).toEqual('/home/hi:there')
     })
   })
 

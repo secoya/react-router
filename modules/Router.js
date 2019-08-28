@@ -2,6 +2,8 @@ import createHashHistory from 'history/lib/createHashHistory'
 import useQueries from 'history/lib/useQueries'
 import invariant from 'invariant'
 import React from 'react'
+import PropTypes from 'prop-types'
+import createClass from 'create-react-class'
 
 import createTransitionManager from './createTransitionManager'
 import { routes } from './InternalPropTypes'
@@ -20,14 +22,14 @@ function isUnsupportedHistory(history) {
   return history && history.getCurrentLocation
 }
 
-const { func, object } = React.PropTypes
+const { func, object } = PropTypes
 
 /**
  * A <Router> is a high-level API for automatically setting up
  * a router that renders a <RouterContext> with all the props
  * it needs each time the URL changes.
  */
-const Router = React.createClass({
+const Router = createClass({
 
   propTypes: {
     history: object,
@@ -72,7 +74,7 @@ const Router = React.createClass({
     }
   },
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { parseQueryString, stringifyQuery } = this.props
     warning(
       !(parseQueryString || stringifyQuery),
@@ -128,8 +130,8 @@ const Router = React.createClass({
     let createHistory
     if (history) {
       warning(false, 'It appears you have provided a deprecated history object to `<Router/>`, please use a history provided by ' +
-                     'React Router with `import { browserHistory } from \'react-router\'` or `import { hashHistory } from \'react-router\'`. ' +
-                     'If you are using a custom history please create it with `useRouterHistory`, see http://tiny.cc/router-usinghistory for details.')
+        'React Router with `import { browserHistory } from \'react-router\'` or `import { hashHistory } from \'react-router\'`. ' +
+        'If you are using a custom history please create it with `useRouterHistory`, see http://tiny.cc/router-usinghistory for details.')
       createHistory = () => history
     } else {
       warning(false, '`Router` no longer defaults the history prop to hash history. Please use the `hashHistory` singleton instead. http://tiny.cc/router-defaulthistory')
@@ -140,7 +142,7 @@ const Router = React.createClass({
   },
 
   /* istanbul ignore next: sanity check */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     warning(
       nextProps.history === this.props.history,
       'You cannot change <Router history>; it will be ignored'
@@ -148,7 +150,7 @@ const Router = React.createClass({
 
     warning(
       (nextProps.routes || nextProps.children) ===
-        (this.props.routes || this.props.children),
+      (this.props.routes || this.props.children),
       'You cannot change <Router routes>; it will be ignored'
     )
   },
