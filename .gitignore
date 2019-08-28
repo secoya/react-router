@@ -7,3 +7,4 @@ npm-debug.log
 website/index.html
 website/tags/*
 coverage
+.npmrc
