@@ -1,6 +1,6 @@
 {
 	"name": "@secoya/react-router",
-	"version": "2.8.1",
+	"version": "2.8.2",
 	"description": "A complete routing library for React",
 	"files": [
 		"*.md",
