@@ -1,5 +1,5 @@
 {
-	"name": "react-router",
+	"name": "@secoya/react-router",
 	"version": "2.8.1",
 	"description": "A complete routing library for React",
 	"files": [
@@ -11,9 +11,9 @@
 	],
 	"main": "lib/index",
 	"jsnext:main": "es6/index",
-	"repository": "reactjs/react-router",
-	"homepage": "https://github.com/reactjs/react-router#readme",
-	"bugs": "https://github.com/reactjs/react-router/issues",
+	"repository": "secoya/react-router",
+	"homepage": "https://github.com/secoya/react-router#readme",
+	"bugs": "https://github.com/secoya/react-router/issues",
 	"scripts": {
 		"build": "npm run build-cjs && npm run build-es",
 		"build-cjs": "rimraf lib && cross-env BABEL_ENV=cjs babel ./modules -d lib --ignore '__tests__'",
@@ -32,16 +32,16 @@
 	],
 	"license": "MIT",
 	"dependencies": {
-		"create-react-class": "^15.6.3",
 		"history": "^2.1.2",
 		"hoist-non-react-statics": "^1.2.0",
 		"invariant": "^2.2.1",
 		"loose-envify": "^1.2.0",
-		"prop-types": "^15.7.2",
 		"warning": "^3.0.0"
 	},
 	"peerDependencies": {
-		"react": "^16.0.0"
+		"react": "^16.0.0",
+		"create-react-class": "^15.6.3",
+		"prop-types": "^15.7.2"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.11.4",
@@ -57,6 +57,7 @@
 		"babel-register": "^6.11.6",
 		"bundle-loader": "^0.5.4",
 		"codecov": "^1.0.1",
+		"create-react-class": "^15.6.3",
 		"cross-env": "^2.0.0",
 		"css-loader": "^0.23.1",
 		"eslint": "^3.2.0",
@@ -76,6 +77,7 @@
 		"karma-webpack": "^1.7.0",
 		"mocha": "^2.5.3",
 		"pretty-bytes": "^3.0.1",
+		"prop-types": "^15.7.2",
 		"qs": "^6.2.1",
 		"react": "^16.0.0",
 		"react-addons-css-transition-group": "^15.6.2",
